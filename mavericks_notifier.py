@@ -28,6 +28,7 @@ def send_email(message):
 msw_url = 'https://magicseaweed.com/Mavericks-Half-Moon-Bay-Surf-Report/162/'
 surfline_url = 'https://www.surfline.com/surf-news/'
 surfer_url = 'https://www.surfer.com/'
+inertia_url = 'https://www.theinertia.com/'
 
 # scrape the conditions for 5 to 7 days out and determine if they are good
 msw = requests.get(msw_url)
@@ -75,12 +76,16 @@ surfline_news = BeautifulSoup(surfline.content, 'html.parser')
 surfer = requests.get(surfer_url)
 surfer_news = BeautifulSoup(surfline.content, 'html.parser')
 
+inertia = requests.get(inertia_url)
+inertia_news = BeautifulSoup(inertia.content, 'html.parser')
+
 mavs_pattern = '[M|m][A|a][V|v][E|e][R|r][I|i][C|c][K|k][S|s]'
 
 surfline_mavs = re.findall(mavs_pattern, surfline_news.text)
 surfer_mavs = re.findall(mavs_pattern, surfer_news.text)
+inertia_mavs = re.findall(mavs_pattern, inertia_news.text)
 
-mavs_len = len(surfline_mavs) + len(surfer_mavs)
+mavs_len = len(surfline_mavs) + len(surfer_mavs) + len(inertia_mavs)
 
 if mavs_len > 5 and len(conditions) > 1:
     opening = 'Mavericks is being mentioned in the news a lot and the conditions look good!\n\n'
